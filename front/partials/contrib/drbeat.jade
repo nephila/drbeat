@@ -1,0 +1,34 @@
+|module.run(['$templateCache', ($templateCache) ->
+|  $templateCache.put('contrib/drbeat', '''
+div(contrib-drbeat-webhooks, ng-controller="ContribDrBeatAdminController as ctrl")
+    header
+        h1(tg-main-title)
+
+    form
+        label(for="email") Notification mail
+        div.contrib-form-wrapper
+            fieldset
+                input(type="text", name="email", ng-model="drbeat.email", placeholder="Insert your mail", id="mail", data-type="email")
+                div.check-item
+                    span Enable Dr.Beat
+                    div.check
+                        input(type="checkbox" name="notification" ng-model="drbeat.enabled")
+                        div
+                        span.check-text.check-yes(translate="COMMON.YES")
+                        span.check-text.check-no(translate="COMMON.NO")
+                div.check-item(ng-repeat="priority in drbeat.priorities")
+                    span {{priority.name}}
+                    div.check
+                        input(type="checkbox" name="notification" ng-model="priority.enabled")
+                        div
+                        span.check-text.check-yes(translate="COMMON.YES")
+                        span.check-text.check-no(translate="COMMON.NO")
+
+        button(type="submit", class="hidden")
+        a.button-green.submit-button(href="", title="Save", ng-click="ctrl.updateOrCreateHook(drbeat)")
+            span Save
+
+    a.help-button(href="https://nephila.it", target="_blank")
+        span.icon.icon-help
+        span Do you need help? Check out our support page!
+|''')]);

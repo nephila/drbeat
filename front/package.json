@@ -1,0 +1,30 @@
+{
+  "name": "taiga-drbeat",
+  "version": "0.0.1",
+  "description": "Dr. Beat!",
+  "main": "index.js",
+  "scripts": {
+    "build-jade": "node_modules/jade/bin/jade.js partials/contrib/drbeat.jade -o dist/",
+    "build-coffee": "cat coffee/drbeat.coffee dist/drbeat.html | node_modules/coffee-script/bin/coffee --compile --stdio > dist/drbeat.js",
+    "build": "npm run build-jade; npm run build-coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taigaio/taiga-drbeat"
+  },
+  "keywords": [
+    "drbeat",
+    "taiga",
+    "integration"
+  ],
+  "author": "Andrea Stagi <a.stagi@nephila.it>",
+  "license": "AGPL",
+  "bugs": {
+    "url": "https://github.com/taigaio/taiga-contrib-hipchat/issues"
+  },
+  "homepage": "https://github.com/taigaio/taiga-contrib-hipchat",
+  "dependencies": {
+    "coffee-script": "^1.8.0",
+    "jade": "^1.9.1"
+  }
+}
