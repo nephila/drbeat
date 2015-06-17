@@ -23,5 +23,5 @@ class DrBeat(models.Model):
     enabled = models.BooleanField(default=True)
     email = models.CharField(null=False, blank=False,
         verbose_name=_("Email"), max_length=200, default='')
-    enabled_priorities = models.CharField(null=False, blank=False,
+    enabled_priorities = models.CharField(null=False, blank=True,
         verbose_name=_("Enabled priorities"), max_length=300, default='')
