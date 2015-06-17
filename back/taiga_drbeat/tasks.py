@@ -21,6 +21,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.template import loader, Context
+from djmail import template_mail
 
 from taiga.base.api.renderers import UnicodeJSONRenderer
 from taiga.projects.issues.models import Issue
@@ -33,6 +34,10 @@ from .models import DrBeat
 logger = logging.getLogger(__name__)
 
 
+class DrBeatTemplateEmail(template_mail.TemplateMail):
+    name = "drbeat"
+
+
 class PeriodicEmergenciesChecker(PeriodicTask):
     run_every = timedelta(
         seconds=10
@@ -40,6 +45,8 @@ class PeriodicEmergenciesChecker(PeriodicTask):
 
     def run(self, **kwargs):
         drbeats = DrBeat.objects.filter(enabled=True)
+        email = DrBeatTemplateEmail()
+
         for drbeat in drbeats:
             if not drbeat.enabled_priorities:
                 continue
@@ -48,5 +55,4 @@ class PeriodicEmergenciesChecker(PeriodicTask):
                 priority__in=drbeat.enabled_priorities.split(','),
                 status__is_closed=False
             )
-            print (issues)
-            print ('Dr.Beat sends an email!!!')
+            email.send(drbeat.email, {"issues": issues})
