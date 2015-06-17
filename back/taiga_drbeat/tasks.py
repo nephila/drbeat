@@ -16,23 +16,36 @@
 import requests
 import logging
 
+from celery.task import PeriodicTask
+from datetime import datetime, timedelta
+
 from django.conf import settings
 from django.template import loader, Context
 
 from taiga.base.api.renderers import UnicodeJSONRenderer
+from taiga.projects.issues.models import Issue
+
 from taiga.base.utils.db import get_typename_for_model_instance
 from taiga.celery import app
 
+from .models import DrBeat
 
 logger = logging.getLogger(__name__)
 
-from celery.task import PeriodicTask
-from datetime import datetime, timedelta
 
 class PeriodicEmergenciesChecker(PeriodicTask):
     run_every = timedelta(
-        seconds=5
+        seconds=10
     )
 
     def run(self, **kwargs):
-        print ('Dr.Beat sends an email!!!')
+        drbeats = DrBeat.objects.filter(enabled=True)
+        for drbeat in drbeats:
+            if not drbeat.enabled_priorities:
+                continue
+            issues = Issue.objects.filter(
+                project=drbeat.project,
+                priority__in=drbeat.enabled_priorities.split(',')
+            )
+            print (issues)
+            print ('Dr.Beat sends an email!!!')
