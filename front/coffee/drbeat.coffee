@@ -19,6 +19,25 @@ initDrBeatPlugin = ($tgUrls) ->
         "drbeat": "/drbeat"
     })
 
+decorateDrBeat = (drbeat, project) ->
+    drbeat.priorities = project.priorities
+    drbeat_en_priorities = drbeat.enabled_priorities.split(',')
+    for priority in drbeat.priorities
+        if "" + priority.id in drbeat_en_priorities
+            priority.enabled = true
+        else
+            priority.enabled = false
+
+unDecorateDrBeat = (drbeat) ->
+    drbeat.enabled_priorities = ""
+    for priority in drbeat.priorities
+        if priority.enabled
+            drbeat.enabled_priorities += priority.id + ","
+    if drbeat.enabled_priorities.length > 0
+        drbeat.enabled_priorities = drbeat.enabled_priorities.slice(
+            0, drbeat.enabled_priorities.length - 1
+        )
+
 class DrBeatAdmin
     @.$inject = [
         "$rootScope",
@@ -44,7 +63,7 @@ class DrBeatAdmin
                 }
                 if drbeats.length > 0
                     @scope.drbeat = drbeats[0]
-                @decorateDrBeat(@scope.drbeat);
+                decorateDrBeat(@scope.drbeat, @scope.project);
                 @appTitle.set("DrBeat - " + @scope.project.name)
 
             promise.then null, =>
@@ -56,15 +75,6 @@ class DrBeatAdmin
             @confirm.notify("success")
         promise.error (data, status) =>
             @confirm.notify("error")
-
-    decorateDrBeat: (drbeat) ->
-        drbeat.priorities = @scope.project.priorities
-        drbeat_en_priorities = drbeat.enabled_priorities.split(',')
-        for priority in drbeat.priorities
-            if "" + priority.id in drbeat_en_priorities
-                priority.enabled = true
-            else
-                priority.enabled = false
 
 
 module.controller("ContribDrBeatAdminController", DrBeatAdmin)
@@ -84,6 +94,7 @@ DrBeatDirective = ($repo, $confirm, $loading) ->
                 promise.then (data) ->
                     $scope.drbeat = data
             else if $scope.drbeat.email
+                unDecorateDrBeat($scope.drbeat)
                 promise = $repo.save($scope.drbeat)
                 promise.then (data) ->
                     $scope.drbeat = data
