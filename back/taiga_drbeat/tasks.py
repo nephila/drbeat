@@ -45,7 +45,8 @@ class PeriodicEmergenciesChecker(PeriodicTask):
                 continue
             issues = Issue.objects.filter(
                 project=drbeat.project,
-                priority__in=drbeat.enabled_priorities.split(',')
+                priority__in=drbeat.enabled_priorities.split(','),
+                status__is_closed=False
             )
             print (issues)
             print ('Dr.Beat sends an email!!!')
