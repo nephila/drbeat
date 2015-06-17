@@ -2,7 +2,11 @@
 |  $templateCache.put('contrib/drbeat', '''
 div(contrib-drbeat-webhooks, ng-controller="ContribDrBeatAdminController as ctrl")
     header
-        h1(tg-main-title)
+        h1
+            span.project-name
+                | {{::project.name}}
+            span.green
+                | {{::sectionName}}
 
     form
         label(for="email") Notification mail

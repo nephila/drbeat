@@ -2,7 +2,7 @@
 
 drBeatInfo = {
     slug: "drbeat"
-    name: "DrBeat"
+    name: "Dr.Beat"
     type: "admin"
     module: 'taigaContrib.drbeat'
 }
@@ -49,7 +49,7 @@ class DrBeatAdmin
     ]
 
     constructor: (@rootScope, @scope, @repo, @appTitle, @confirm, @http) ->
-        @scope.sectionName = "DrBeat"
+        @scope.sectionName = "Dr.Beat"
         @scope.sectionSlug = "drbeat"
 
         @scope.$on "project:loaded", =>
