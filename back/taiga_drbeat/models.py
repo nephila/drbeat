@@ -25,3 +25,5 @@ class DrBeat(models.Model):
         verbose_name=_("Email"), max_length=200, default='')
     enabled_priorities = models.CharField(null=False, blank=True,
         verbose_name=_("Enabled priorities"), max_length=300, default='')
+    hour = models.IntegerField(null=False, blank=True, default=7,
+        verbose_name=_("Scheduled hours interval"))

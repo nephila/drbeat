@@ -9,10 +9,16 @@ div(contrib-drbeat-webhooks, ng-controller="ContribDrBeatAdminController as ctrl
                 | {{::sectionName}}
 
     form
-        label(for="email") Notification mail
         div.contrib-form-wrapper
             fieldset
+
+                label(for="email") Notification mail
                 input(type="text", name="email", ng-model="drbeat.email", placeholder="Insert your mail", id="mail", data-type="email")
+
+                label(for="hour") Hours range
+                select( ng-model="drbeat.hour" ng-disabled="!drbeat.enabled" name="hour")
+                    option(ng-repeat="hour in hours" value="{{hour.value}}"){{hour.label}}
+
                 div.check-item
                     span Enable Dr.Beat
                     div.check
@@ -23,7 +29,7 @@ div(contrib-drbeat-webhooks, ng-controller="ContribDrBeatAdminController as ctrl
                 div.check-item(ng-repeat="priority in drbeat.priorities | orderBy:'-order'")
                     span {{priority.name}}
                     div.check
-                        input(type="checkbox" name="notification" ng-model="priority.enabled")
+                        input(type="checkbox" name="notification" ng-model="priority.enabled" ng-disabled="!drbeat.enabled")
                         div
                         span.check-text.check-yes(translate="COMMON.YES")
                         span.check-text.check-no(translate="COMMON.NO")

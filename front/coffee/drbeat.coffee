@@ -52,6 +52,16 @@ class DrBeatAdmin
         @scope.sectionName = "Dr.Beat"
         @scope.sectionSlug = "drbeat"
 
+        @scope.hours =
+            [
+                {label: '7:00-8:00', value: 7},
+                {label: '8:00-9:00', value: 8},
+                {label: '9:00-10:00', value: 9},
+                {label: '10:00-11:00', value: 10},
+                {label: '11:00-12:00', value: 11},
+                {label: '12:00-13:00', value: 12},
+            ];
+
         @scope.$on "project:loaded", =>
             promise = @repo.queryMany("drbeat", {project: @scope.projectId})
 
