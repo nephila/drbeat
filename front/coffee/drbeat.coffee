@@ -54,12 +54,20 @@ class DrBeatAdmin
 
         @scope.hours =
             [
+                {label: '6:00-7:00', value: 6},
                 {label: '7:00-8:00', value: 7},
                 {label: '8:00-9:00', value: 8},
                 {label: '9:00-10:00', value: 9},
                 {label: '10:00-11:00', value: 10},
                 {label: '11:00-12:00', value: 11},
                 {label: '12:00-13:00', value: 12},
+                {label: '13:00-14:00', value: 13},
+                {label: '14:00-15:00', value: 14},
+                {label: '15:00-16:00', value: 15},
+                {label: '16:00-17:00', value: 16},
+                {label: '17:00-18:00', value: 17},
+                {label: '18:00-19:00', value: 18},
+                {label: '19:00-20:00', value: 19},
             ];
 
         @scope.$on "project:loaded", =>
