@@ -18,6 +18,7 @@ import logging
 
 from celery.task import PeriodicTask
 from datetime import datetime, timedelta
+from django.utils import timezone
 
 from django.conf import settings
 from django.template import loader, Context
@@ -44,15 +45,17 @@ class PeriodicEmergenciesChecker(PeriodicTask):
     )
 
     def run(self, **kwargs):
+        now = timezone.now()
         drbeats = DrBeat.objects.filter(enabled=True)
         email = DrBeatTemplateEmail()
 
         for drbeat in drbeats:
             if not drbeat.enabled_priorities:
                 continue
-            issues = Issue.objects.filter(
-                project=drbeat.project,
-                priority__in=drbeat.enabled_priorities.split(','),
-                status__is_closed=False
-            )
-            email.send(drbeat.email, {"issues": issues})
+            if drbeat.hour <= now.hour <= drbeat.hour + 1 :
+                issues = Issue.objects.filter(
+                    project=drbeat.project,
+                    priority__in=drbeat.enabled_priorities.split(','),
+                    status__is_closed=False
+                )
+                email.send(drbeat.email, {"issues": issues})
