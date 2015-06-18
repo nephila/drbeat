@@ -19,7 +19,16 @@ initDrBeatPlugin = ($tgUrls) ->
         "drbeat": "/drbeat"
     })
 
+toUtcTime = (time) ->
+    time_offset = Math.floor((new Date()).getTimezoneOffset() / 60)
+    return parseInt(time) + time_offset
+
+fromUtcTime = (time) ->
+    time_offset = Math.floor((new Date()).getTimezoneOffset() / 60)
+    return parseInt(time) - time_offset
+
 decorateDrBeat = (drbeat, project) ->
+    drbeat.hour = fromUtcTime(drbeat.hour)
     drbeat.priorities = project.priorities
     drbeat_en_priorities = drbeat.enabled_priorities.split(',')
     for priority in drbeat.priorities
@@ -29,6 +38,7 @@ decorateDrBeat = (drbeat, project) ->
             priority.enabled = false
 
 unDecorateDrBeat = (drbeat) ->
+    drbeat.hour = toUtcTime(drbeat.hour)
     drbeat.enabled_priorities = ""
     for priority in drbeat.priorities
         if priority.enabled
@@ -115,6 +125,7 @@ DrBeatDirective = ($repo, $confirm, $loading) ->
                 unDecorateDrBeat($scope.drbeat)
                 promise = $repo.save($scope.drbeat)
                 promise.then (data) ->
+                    data.hour = fromUtcTime(data.hour)
                     $scope.drbeat = data
             else
                 promise = $repo.remove($scope.drbeat)
