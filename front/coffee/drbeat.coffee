@@ -30,12 +30,13 @@ fromUtcTime = (time) ->
 decorateDrBeat = (drbeat, project) ->
     drbeat.hour = fromUtcTime(drbeat.hour)
     drbeat.priorities = project.priorities
-    drbeat_en_priorities = drbeat.enabled_priorities.split(',')
-    for priority in drbeat.priorities
-        if "" + priority.id in drbeat_en_priorities
-            priority.enabled = true
-        else
-            priority.enabled = false
+    if drbeat.enabled_priorities
+        drbeat_en_priorities = drbeat.enabled_priorities.split(',')
+        for priority in drbeat.priorities
+            if "" + priority.id in drbeat_en_priorities
+                priority.enabled = true
+            else
+                priority.enabled = false
 
 unDecorateDrBeat = (drbeat) ->
     drbeat.hour = toUtcTime(drbeat.hour)
