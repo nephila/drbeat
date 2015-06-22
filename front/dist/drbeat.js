@@ -45,18 +45,20 @@
     var drbeat_en_priorities, i, len, priority, ref, ref1, results;
     drbeat.hour = fromUtcTime(drbeat.hour);
     drbeat.priorities = project.priorities;
-    drbeat_en_priorities = drbeat.enabled_priorities.split(',');
-    ref = drbeat.priorities;
-    results = [];
-    for (i = 0, len = ref.length; i < len; i++) {
-      priority = ref[i];
-      if (ref1 = "" + priority.id, indexOf.call(drbeat_en_priorities, ref1) >= 0) {
-        results.push(priority.enabled = true);
-      } else {
-        results.push(priority.enabled = false);
+    if (drbeat.enabled_priorities) {
+      drbeat_en_priorities = drbeat.enabled_priorities.split(',');
+      ref = drbeat.priorities;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        priority = ref[i];
+        if (ref1 = "" + priority.id, indexOf.call(drbeat_en_priorities, ref1) >= 0) {
+          results.push(priority.enabled = true);
+        } else {
+          results.push(priority.enabled = false);
+        }
       }
+      return results;
     }
-    return results;
   };
 
   unDecorateDrBeat = function(drbeat) {
@@ -71,9 +73,8 @@
       }
     }
     if (drbeat.enabled_priorities.length > 0) {
-      drbeat.enabled_priorities = drbeat.enabled_priorities.slice(0, drbeat.enabled_priorities.length - 1);
+      return drbeat.enabled_priorities = drbeat.enabled_priorities.slice(0, drbeat.enabled_priorities.length - 1);
     }
-    return console.log(drbeat);
   };
 
   DrBeatAdmin = (function() {
@@ -244,7 +245,7 @@
 
   module.run([
     '$templateCache', function($templateCache) {
-      return $templateCache.put('contrib/drbeat', '<div contrib-drbeat-webhooks="contrib-drbeat-webhooks" ng-controller="ContribDrBeatAdminController as ctrl"><header><h1><span class="project-name">{{::project.name}}</span><span class="green">{{::sectionName}}</span></h1></header><form><div class="contrib-form-wrapper"><fieldset><label for="email">Notification mail</label><input type="text" name="email" ng-model="drbeat.email" placeholder="Insert your mail" id="mail" data-type="email"/><label for="hour">Hours range</label><select ng-model="drbeat.hour" ng-disabled="!drbeat.enabled" name="hour"><option ng-repeat="hour in hours" value="{{hour.value}}">{{hour.label}}</option></select><div class="check-item"><span>Enable Dr.Beat</span><div class="check"><input type="checkbox" name="notification" ng-model="drbeat.enabled"/><div></div><span translate="COMMON.YES" class="check-text check-yes"></span><span translate="COMMON.NO" class="check-text check-no"></span></div></div><div ng-repeat="priority in drbeat.priorities | orderBy:\'-order\'" class="check-item"><span>{{priority.name}}</span><div class="check"><input type="checkbox" name="notification" ng-model="priority.enabled" ng-disabled="!drbeat.enabled"/><div></div><span translate="COMMON.YES" class="check-text check-yes"></span><span translate="COMMON.NO" class="check-text check-no"></span></div></div></fieldset></div><button type="submit" class="hidden"></button><a href="" title="Save" ng-click="ctrl.updateOrCreateHook(drbeat)" class="button-green submit-button"><span>Save</span></a></form><a href="https://nephila.it" target="_blank" class="help-button"><span class="icon icon-help"></span><span>Do you need help? Check out our support page!</span></a></div>');
+      return $templateCache.put('contrib/drbeat', '<div contrib-drbeat-webhooks="contrib-drbeat-webhooks" ng-controller="ContribDrBeatAdminController as ctrl"><header><h1><span class="project-name">{{::project.name}}</span><span class="green">{{::sectionName}}</span></h1></header><form><div class="contrib-form-wrapper"><fieldset><label for="email">Notification mail</label><input type="text" name="email" ng-model="drbeat.email" placeholder="Insert your mail" id="mail" data-type="email"/><label for="hour">Hours range</label><select ng-model="drbeat.hour" ng-disabled="!drbeat.enabled" name="hour"><option ng-repeat="hour in hours" value="{{hour.value}}">{{hour.label}}</option></select><div class="check-item"><span>Enable Dr.Beat</span><div class="check"><input type="checkbox" name="notification" ng-model="drbeat.enabled"/><div></div><span translate="COMMON.YES" class="check-text check-yes"></span><span translate="COMMON.NO" class="check-text check-no"></span></div></div><div ng-repeat="priority in drbeat.priorities | orderBy:\'-order\'" class="check-item"><span><div style="float:left; margin-right:5px; background-color:{{priority.color}}" class="level"></div><span>{{priority.name}}</span></span><div class="check"><input type="checkbox" name="notification" ng-model="priority.enabled" ng-disabled="!drbeat.enabled"/><div></div><span translate="COMMON.YES" class="check-text check-yes"></span><span translate="COMMON.NO" class="check-text check-no"></span></div></div></fieldset></div><button type="submit" class="hidden"></button><a href="" title="Save" ng-click="ctrl.updateOrCreateHook(drbeat)" class="button-green submit-button"><span>Save</span></a></form><a href="https://nephila.it" target="_blank" class="help-button"><span class="icon icon-help"></span><span>Do you need help? Check out our support page!</span></a></div>');
     }
   ]);
 
