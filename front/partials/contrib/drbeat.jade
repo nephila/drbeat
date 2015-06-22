@@ -27,7 +27,9 @@ div(contrib-drbeat-webhooks, ng-controller="ContribDrBeatAdminController as ctrl
                         span.check-text.check-yes(translate="COMMON.YES")
                         span.check-text.check-no(translate="COMMON.NO")
                 div.check-item(ng-repeat="priority in drbeat.priorities | orderBy:'-order'")
-                    span {{priority.name}}
+                    span
+                        div.level(style="float:left; margin-right:5px; background-color:{{priority.color}}")
+                        span {{priority.name}}
                     div.check
                         input(type="checkbox" name="notification" ng-model="priority.enabled" ng-disabled="!drbeat.enabled")
                         div
