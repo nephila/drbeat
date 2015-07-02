@@ -41,7 +41,7 @@ class DrBeatTemplateEmail(template_mail.TemplateMail):
 
 class PeriodicEmergenciesChecker(PeriodicTask):
     run_every = timedelta(
-        seconds=10
+        seconds=3600
     )
 
     def run(self, **kwargs):
