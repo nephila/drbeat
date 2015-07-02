@@ -1,6 +1,11 @@
-<ul>
-{% for issue in issues %}
-{% set final_url = resolve_front_url("issue", issue.project.slug, issue.ref) %}
-<li><a href="{{final_url}}">{{issue.subject}}</a></li>
+<div>
+{% for group in issues|groupby('status.name') %}
+    </br>
+    <div><b>{{ group.grouper }}</b></div>
+    </br>
+    {% for issue in group.list %}
+    {% set final_url = resolve_front_url("issue", issue.project.slug, issue.ref) %}
+    <div><a href="{{final_url}}">{{issue.subject}}</a></div>
+    {% endfor %}
 {% endfor %}
-</ul>
+</div>
