@@ -78,13 +78,13 @@
   };
 
   DrBeatAdmin = (function() {
-    DrBeatAdmin.$inject = ["$rootScope", "$scope", "$tgRepo", "$appTitle", "$tgConfirm", "$tgHttp"];
+    DrBeatAdmin.$inject = ["$rootScope", "$scope", "$tgRepo", "tgAppMetaService", "$tgConfirm", "$tgHttp"];
 
-    function DrBeatAdmin(rootScope, scope, repo, appTitle, confirm, http) {
+    function DrBeatAdmin(rootScope, scope, repo, appMetaService, confirm, http) {
       this.rootScope = rootScope;
       this.scope = scope;
       this.repo = repo;
-      this.appTitle = appTitle;
+      this.appMetaService = appMetaService;
       this.confirm = confirm;
       this.http = http;
       this.scope.sectionName = "Dr.Beat";
@@ -150,7 +150,7 @@
               _this.scope.drbeat = drbeats[0];
             }
             decorateDrBeat(_this.scope.drbeat, _this.scope.project);
-            return _this.appTitle.set("DrBeat - " + _this.scope.project.name);
+            return _this.appMetaService.setAll("DrBeat - " + _this.scope.project.name, "DrBeat plugin");
           });
           return promise.then(null, function() {
             return _this.confirm.notify("error");

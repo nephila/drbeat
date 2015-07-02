@@ -54,12 +54,12 @@ class DrBeatAdmin
         "$rootScope",
         "$scope",
         "$tgRepo",
-        "$appTitle",
+        "tgAppMetaService",
         "$tgConfirm",
         "$tgHttp",
     ]
 
-    constructor: (@rootScope, @scope, @repo, @appTitle, @confirm, @http) ->
+    constructor: (@rootScope, @scope, @repo, @appMetaService, @confirm, @http) ->
         @scope.sectionName = "Dr.Beat"
         @scope.sectionSlug = "drbeat"
 
@@ -93,7 +93,10 @@ class DrBeatAdmin
                 if drbeats.length > 0
                     @scope.drbeat = drbeats[0]
                 decorateDrBeat(@scope.drbeat, @scope.project);
-                @appTitle.set("DrBeat - " + @scope.project.name)
+                @appMetaService.setAll(
+                    "DrBeat - " + @scope.project.name,
+                    "DrBeat plugin"
+                )
 
             promise.then null, =>
                 @confirm.notify("error")
