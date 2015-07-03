@@ -3,9 +3,11 @@
     </br>
     <div><b>{{ group.grouper }}</b></div>
     </br>
+    <ul>
     {% for issue in group.list %}
     {% set final_url = resolve_front_url("issue", issue.project.slug, issue.ref) %}
-    <div><a href="{{final_url}}">{{issue.subject}}</a></div>
+    <li><a href="{{final_url}}">{{issue.subject}}</a></li>
     {% endfor %}
+    </ul>
 {% endfor %}
 </div>
