@@ -189,12 +189,12 @@
       });
       submit = debounce(2000, (function(_this) {
         return function(event) {
-          var promise;
+          var currentLoading, promise;
           event.preventDefault();
           if (!form.validate()) {
             return;
           }
-          $loading.start(submitButton);
+          currentLoading = $loading().target(submitButton).start();
           if (!$scope.drbeat.id) {
             promise = $repo.create("drbeat", $scope.drbeat);
             promise.then(function(data) {
@@ -218,11 +218,11 @@
             });
           }
           promise.then(function(data) {
-            $loading.finish(submitButton);
+            currentLoading.finish();
             return $confirm.notify("success");
           });
           return promise.then(null, function(data) {
-            $loading.finish(submitButton);
+            currentLoading.finish();
             form.setErrors(data);
             if (data._error_message) {
               return $confirm.notify("error", data._error_message);

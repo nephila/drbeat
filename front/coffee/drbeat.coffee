@@ -119,7 +119,9 @@ DrBeatDirective = ($repo, $confirm, $loading) ->
 
             return if not form.validate()
 
-            $loading.start(submitButton)
+            currentLoading = $loading()
+                .target(submitButton)
+                .start()
 
             if not $scope.drbeat.id
                 promise = $repo.create("drbeat", $scope.drbeat)
@@ -141,11 +143,11 @@ DrBeatDirective = ($repo, $confirm, $loading) ->
                     }
 
             promise.then (data)->
-                $loading.finish(submitButton)
+                currentLoading.finish()
                 $confirm.notify("success")
 
             promise.then null, (data) ->
-                $loading.finish(submitButton)
+                currentLoading.finish()
                 form.setErrors(data)
                 if data._error_message
                     $confirm.notify("error", data._error_message)
